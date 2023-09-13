@@ -4,9 +4,9 @@ import { WordContext } from "./context/wordContext"
 import { Toaster, toast } from "sonner"
 import Keyboard from "./components/Keyboard"
 import Board from "./components/Board"
+import confetti from "canvas-confetti";
 
 function App() {
-
   //Estado Inicial del board
   const [boardState, setBoardState] =
     useState<{ status: string, value: string }[][]>(board)
@@ -61,6 +61,7 @@ function App() {
         setAttempts((prevAttempts) => prevAttempts + 1)
       } else {
         toast.success(`Enhorabuena! ${randomWord} era la palabra correcta!`)
+        return confetti()
       }
     }
 
@@ -94,14 +95,14 @@ function App() {
     const initialBoard = board.map((row) =>
       row.map((cell) => ({ ...cell, status: "", value: "" }))
     )
-    setBoardState(initialBoard); // Restaura el tablero con celdas vacías
+    setBoardState(initialBoard) // Restaura el tablero con celdas vacías
     
-    setAttempts(0); // Reiniciar el número de intentos
-    setLetterAttempt(0); // Reiniciar la posición de la primera letra
-    setAnswer([]); // Reiniciar la respuesta del jugador
+    setAttempts(0) // Reiniciar el número de intentos
+    setLetterAttempt(0) // Reiniciar la posición de la primera letra
+    setAnswer([])// Reiniciar la respuesta del jugador
     
-    getRandomWord(); // Obtener una nueva palabra
-  };
+    getRandomWord() // Obtener una nueva palabra
+  }
 
   return (
     <main>
