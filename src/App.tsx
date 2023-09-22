@@ -33,41 +33,40 @@ function App() {
   }
 
   const handleCorrect = () => {
-    const newBoardState = boardState
-
-    if (attempts === board.length - 1) {
-      toast.error(`Has fallado, la palabra era: ${randomWord}`)
-      return
-    }
+    const newBoardState = [...boardState];
 
     if (answer.length !== 5) {
-      toast.error("Introduce una palabra de 5 letras!")
-      return
-    } else {
-      for (let i = 0; i < answer.length; ++i) {
-        if (randomWord.includes(answer[i]) && !(randomWord[i] === answer[i])) {
-          newBoardState[attempts][i].status = "finded"
-        } else if (randomWord[i] === answer[i]) {
-          newBoardState[attempts][i].status = "correct"
-        } else {
-          newBoardState[attempts][i].status = "incorrect"
-        }
-      }
+      toast.error("Introduce una palabra de 5 letras!");
+      return;
+    }
 
-      const notEqual = answer.join("") !== randomWord
-
-      if (notEqual && attempts < board.length - 1) {
-        setLetterAttempt(0)
-        setAttempts((prevAttempts) => prevAttempts + 1)
+    for (let i = 0; i < answer.length; ++i) {
+      if (randomWord.includes(answer[i]) && !(randomWord[i] === answer[i])) {
+        newBoardState[attempts][i].status = "finded";
+      } else if (randomWord[i] === answer[i]) {
+        newBoardState[attempts][i].status = "correct";
       } else {
-        toast.success(`Enhorabuena! ${randomWord} era la palabra correcta!`)
-        return confetti()
+        newBoardState[attempts][i].status = "incorrect";
       }
     }
 
-    setBoardState(newBoardState)
-    setAnswer([])
-  }
+    const notEqual = answer.join("") !== randomWord;
+
+    if (notEqual && attempts < board.length - 1) {
+      setLetterAttempt(0);
+      setAttempts((prevAttempts) => prevAttempts + 1);
+    } else if (!notEqual) {
+      toast.success(`¡Enhorabuena! ${randomWord} era la palabra correcta!`);
+      return confetti();
+    } else {
+      toast.error(`¡Has fallado, la palabra era: ${randomWord}`);
+      return;
+    }
+
+    setBoardState(newBoardState);
+    setAnswer([]);
+  };
+
 
   const handleDelete = () => {
     if (answer.length === 0) {
