@@ -1,22 +1,23 @@
 import { useContext, useState } from "react"
-import { board } from "./constant"
-import { WordContext } from "./context/wordContext"
 import { Toaster, toast } from "sonner"
-import Keyboard from "./components/Keyboard"
-import Board from "./components/Board"
 import confetti from "canvas-confetti";
 
+import { board } from "./constant"
+import { WordContext } from "./context/wordContext"
+
+import Keyboard from "./components/Keyboard"
+import Board from "./components/Board"
+
 function App() {
-  //Estado Inicial del board
-  const [boardState, setBoardState] =
-    useState<{ status: string, value: string }[][]>(board)
-  //Numero del intento = fila del board
+
+  const [boardState, setBoardState] = useState<{ status: string, value: string }[][]>(board)
+
   const [attempts, setAttempts] = useState<number>(0)
-  //Posicion de la primera letra
+
   const [letterAttempt, setLetterAttempt] = useState<number>(0)
-  //Array de string para comparar las posiciones de las letra con la palabra a acertar
+
   const [answer, setAnswer] = useState<string[]>([])
-  //Palabra que debera acertar el jugador
+
   const { randomWord, getRandomWord } = useContext(WordContext);
 
   const handleAnswer = (letter: string) => {
@@ -75,18 +76,14 @@ function App() {
     }
 
     const newBoardState = [...boardState]
-
-    // Borra la última letra
     newBoardState[attempts][letterAttempt - 1].value = ""
 
-    // Elimina la última letra ingresada de answer
     const updatedAnswer = [...answer]
     updatedAnswer.pop()
 
     setBoardState(newBoardState)
     setAnswer(updatedAnswer)
 
-    // Decrementa letterAttempt para apuntar a la posición vacía donde se borró la letra
     setLetterAttempt((prevLetterAttempt) => prevLetterAttempt - 1)
   }
 
@@ -94,13 +91,13 @@ function App() {
     const initialBoard = board.map((row) =>
       row.map((cell) => ({ ...cell, status: "", value: "" }))
     )
-    setBoardState(initialBoard) // Restaura el tablero con celdas vacías
+    setBoardState(initialBoard)
     
-    setAttempts(0) // Reiniciar el número de intentos
-    setLetterAttempt(0) // Reiniciar la posición de la primera letra
-    setAnswer([])// Reiniciar la respuesta del jugador
+    setAttempts(0)
+    setLetterAttempt(0) 
+    setAnswer([])
     
-    getRandomWord() // Obtener una nueva palabra
+    getRandomWord()
   }
 
   return (
